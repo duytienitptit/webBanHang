@@ -22,6 +22,7 @@ function AdminDashboard() {
   })
   const [newCategory, setNewCategory] = useState({ name: '', description: '' })
   const [loading, setLoading] = useState(true)
+  const [activeTab, setActiveTab] = useState('products')
 
   useEffect(() => {
     if (user?.role === 'admin') {
@@ -74,6 +75,7 @@ function AdminDashboard() {
       setLoading(false)
     }
   }
+
   const handleCreateCategory = async e => {
     e.preventDefault()
     setLoading(true)
@@ -130,174 +132,227 @@ function AdminDashboard() {
       setLoading(false)
     }
   }
-  if (user?.role !== 'admin') return <div>Access denied</div>
+
+  if (user?.role !== 'admin')
+    return <div className='access-denied'>Access denied. Administrator privileges required.</div>
   if (loading) return <LoadingSpinner />
+
   return (
     <div className='admin-dashboard'>
       <h1>Admin Dashboard</h1>
-      <h2>Create Product</h2>
-      <form onSubmit={handleCreateProduct} className='admin-form'>
-        <div className='form-group'>
-          <input
-            type='text'
-            value={newProduct.name}
-            onChange={e => setNewProduct({ ...newProduct, name: e.target.value })}
-            placeholder='Product Name'
-            required
-          />
-        </div>
 
-        <div className='form-group'>
-          <input
-            type='number'
-            value={newProduct.price}
-            onChange={e => setNewProduct({ ...newProduct, price: e.target.value })}
-            placeholder='Price'
-            required
-          />
-        </div>
-
-        <div className='form-group'>
-          <select
-            value={newProduct.category}
-            onChange={e => setNewProduct({ ...newProduct, category: e.target.value })}
-            required
-          >
-            <option value=''>Select Category</option>
-            {categories.map(category => (
-              <option key={category._id} value={category._id}>
-                {category.name}
-              </option>
-            ))}
-          </select>
-        </div>
-
-        <div className='form-group'>
-          <input
-            type='number'
-            value={newProduct.stock}
-            onChange={e => setNewProduct({ ...newProduct, stock: e.target.value })}
-            placeholder='Stock'
-            required
-          />
-        </div>
-
-        <div className='form-group'>
-          <input
-            type='text'
-            value={newProduct.image}
-            onChange={e => setNewProduct({ ...newProduct, image: e.target.value })}
-            placeholder='Image URL'
-          />
-        </div>
-
-        <div className='form-group'>
-          <textarea
-            value={newProduct.description}
-            onChange={e => setNewProduct({ ...newProduct, description: e.target.value })}
-            placeholder='Description'
-            required
-          />
-        </div>
-
-        <button type='submit' className='submit-btn' disabled={loading}>
-          Create Product
+      <div className='admin-tabs'>
+        <button
+          className={`tab-btn ${activeTab === 'products' ? 'active' : ''}`}
+          onClick={() => setActiveTab('products')}
+        >
+          Products
         </button>
-      </form>{' '}
-      <h2>Products</h2>
-      <div className='item-list'>
-        {products.map(product => (
-          <div key={product._id} className='item-card'>
-            <div>
-              <h3>{product.name}</h3>
-              <p>
-                <strong>Price:</strong> ${product.price}
-              </p>
-              <p>
-                <strong>Stock:</strong> {product.stock}
-              </p>
-              {product.image && (
-                <img
-                  src={product.image}
-                  alt={product.name}
-                  style={{ maxWidth: '100px', maxHeight: '100px', objectFit: 'cover' }}
-                />
-              )}
-            </div>
-            <div className='item-actions'>
-              <button
-                className='delete-btn'
-                onClick={() => handleDeleteProduct(product._id)}
-                disabled={loading}
-              >
-                Delete
-              </button>
-            </div>
-          </div>
-        ))}
+        <button
+          className={`tab-btn ${activeTab === 'categories' ? 'active' : ''}`}
+          onClick={() => setActiveTab('categories')}
+        >
+          Categories
+        </button>
+        <button
+          className={`tab-btn ${activeTab === 'orders' ? 'active' : ''}`}
+          onClick={() => setActiveTab('orders')}
+        >
+          Orders
+        </button>
       </div>
-      <h2>Create Category</h2>
-      <form onSubmit={handleCreateCategory} className='admin-form'>
-        <div className='form-group'>
-          <input
-            type='text'
-            value={newCategory.name}
-            onChange={e => setNewCategory({ ...newCategory, name: e.target.value })}
-            placeholder='Category Name'
-            required
-          />
-        </div>
-        <div className='form-group'>
-          <textarea
-            value={newCategory.description}
-            onChange={e => setNewCategory({ ...newCategory, description: e.target.value })}
-            placeholder='Category Description'
-          />
-        </div>
-        <button type='submit' className='submit-btn' disabled={loading}>
-          Create Category
-        </button>
-      </form>{' '}
-      <h2>Categories</h2>
-      <div className='item-list'>
-        {categories.map(category => (
-          <div key={category._id} className='item-card'>
-            <div>
-              <h3>{category.name}</h3>
-              {category.description && <p>{category.description}</p>}
+
+      {activeTab === 'products' && (
+        <div className='admin-section'>
+          <h2>Create Product</h2>
+          <form onSubmit={handleCreateProduct} className='admin-form'>
+            <div className='form-group'>
+              <input
+                type='text'
+                value={newProduct.name}
+                onChange={e => setNewProduct({ ...newProduct, name: e.target.value })}
+                placeholder='Product Name'
+                required
+              />
             </div>
-            <div className='item-actions'>
-              <button
-                className='delete-btn'
-                onClick={() => handleDeleteCategory(category._id)}
-                disabled={loading}
+
+            <div className='form-group'>
+              <input
+                type='number'
+                value={newProduct.price}
+                onChange={e => setNewProduct({ ...newProduct, price: e.target.value })}
+                placeholder='Price'
+                required
+              />
+            </div>
+
+            <div className='form-group'>
+              <select
+                value={newProduct.category}
+                onChange={e => setNewProduct({ ...newProduct, category: e.target.value })}
+                required
               >
-                Delete
-              </button>
+                <option value=''>Select Category</option>
+                {categories.map(category => (
+                  <option key={category._id} value={category._id}>
+                    {category.name}
+                  </option>
+                ))}
+              </select>
             </div>
-          </div>
-        ))}
-      </div>{' '}
-      <h2>All Orders</h2>
-      <div className='item-list'>
-        {orders.map(order => (
-          <div key={order._id} className='item-card'>
-            <h3>Order #{order._id}</h3>
-            <p>
-              <strong>Total:</strong> ${order.total}
-            </p>
-            <p>
-              <strong>Status:</strong>
-              <span className={`order-status status-${order.status.toLowerCase()}`}>{order.status}</span>
-            </p>
-            {order.createdAt && (
-              <p>
-                <strong>Date:</strong> {new Date(order.createdAt).toLocaleString()}
-              </p>
+
+            <div className='form-group'>
+              <input
+                type='number'
+                value={newProduct.stock}
+                onChange={e => setNewProduct({ ...newProduct, stock: e.target.value })}
+                placeholder='Stock'
+                required
+              />
+            </div>
+
+            <div className='form-group'>
+              <input
+                type='text'
+                value={newProduct.image}
+                onChange={e => setNewProduct({ ...newProduct, image: e.target.value })}
+                placeholder='Image URL'
+              />
+            </div>
+
+            <div className='form-group'>
+              <textarea
+                value={newProduct.description}
+                onChange={e => setNewProduct({ ...newProduct, description: e.target.value })}
+                placeholder='Description'
+                required
+              />
+            </div>
+
+            <button type='submit' className='submit-btn' disabled={loading}>
+              Create Product
+            </button>
+          </form>
+
+          <h2>Products List</h2>
+          <div className='item-list'>
+            {products.length === 0 ? (
+              <p className='no-items'>No products found</p>
+            ) : (
+              products.map(product => (
+                <div key={product._id} className='item-card'>
+                  <div className='item-header'>
+                    <h3>{product.name}</h3>
+                    <span className='stock-badge'>{product.stock} in stock</span>
+                  </div>
+                  <p className='price-tag'>
+                    <strong>Price:</strong> ${product.price}
+                  </p>
+                  {product.image && (
+                    <div className='product-image-container'>
+                      <img src={product.image} alt={product.name} className='product-image' />
+                    </div>
+                  )}
+                  <p className='product-description'>{product.description}</p>
+                  <div className='item-actions'>
+                    <button
+                      className='delete-btn'
+                      onClick={() => handleDeleteProduct(product._id)}
+                      disabled={loading}
+                    >
+                      Delete
+                    </button>
+                  </div>
+                </div>
+              ))
             )}
           </div>
-        ))}
-      </div>
+        </div>
+      )}
+
+      {activeTab === 'categories' && (
+        <div className='admin-section'>
+          <h2>Create Category</h2>
+          <form onSubmit={handleCreateCategory} className='admin-form'>
+            <div className='form-group'>
+              <input
+                type='text'
+                value={newCategory.name}
+                onChange={e => setNewCategory({ ...newCategory, name: e.target.value })}
+                placeholder='Category Name'
+                required
+              />
+            </div>
+            <div className='form-group'>
+              <textarea
+                value={newCategory.description}
+                onChange={e => setNewCategory({ ...newCategory, description: e.target.value })}
+                placeholder='Category Description'
+              />
+            </div>
+            <button type='submit' className='submit-btn' disabled={loading}>
+              Create Category
+            </button>
+          </form>
+
+          <h2>Categories List</h2>
+          <div className='item-list'>
+            {categories.length === 0 ? (
+              <p className='no-items'>No categories found</p>
+            ) : (
+              categories.map(category => (
+                <div key={category._id} className='item-card'>
+                  <div className='category-content'>
+                    <h3>{category.name}</h3>
+                    {category.description && <p className='category-description'>{category.description}</p>}
+                  </div>
+                  <div className='item-actions'>
+                    <button
+                      className='delete-btn'
+                      onClick={() => handleDeleteCategory(category._id)}
+                      disabled={loading}
+                    >
+                      Delete
+                    </button>
+                  </div>
+                </div>
+              ))
+            )}
+          </div>
+        </div>
+      )}
+
+      {activeTab === 'orders' && (
+        <div className='admin-section'>
+          <h2>All Orders</h2>
+          <div className='item-list'>
+            {orders.length === 0 ? (
+              <p className='no-items'>No orders found</p>
+            ) : (
+              orders.map(order => (
+                <div key={order._id} className='item-card order-card'>
+                  <div className='order-card-header'>
+                    <h3>Order #{order._id}</h3>
+                    <span className={`order-status status-${order.status.toLowerCase()}`}>
+                      {order.status}
+                    </span>
+                  </div>
+                  <div className='order-details'>
+                    <p className='order-total'>
+                      <strong>Total:</strong> <span className='total-amount'>${order.total}</span>
+                    </p>
+                    {order.createdAt && (
+                      <p className='order-date'>
+                        <strong>Date:</strong> {new Date(order.createdAt).toLocaleString()}
+                      </p>
+                    )}
+                  </div>
+                </div>
+              ))
+            )}
+          </div>
+        </div>
+      )}
     </div>
   )
 }
