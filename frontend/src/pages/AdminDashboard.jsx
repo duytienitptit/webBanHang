@@ -32,8 +32,8 @@ function AdminDashboard() {
         getAllOrders().then(res => setOrders(res.data))
       ])
         .catch(error => {
-          console.error('Error loading admin data:', error)
-          toast.error('Failed to load admin data')
+          console.error('Lỗi khi tải dữ liệu quản trị:', error)
+          toast.error('Không thể tải dữ liệu quản trị')
         })
         .finally(() => setLoading(false))
     }
@@ -51,7 +51,7 @@ function AdminDashboard() {
       !newProduct.category ||
       !newProduct.stock
     ) {
-      toast.error('Please fill in all required fields')
+      toast.error('Vui lòng điền đầy đủ tất cả các trường bắt buộc')
       setLoading(false)
       return
     }
@@ -63,14 +63,14 @@ function AdminDashboard() {
         stock: parseInt(newProduct.stock, 10)
       }
 
-      console.log('Sending product data:', productData)
+      console.log('Đang gửi dữ liệu sản phẩm:', productData)
       const response = await createProduct(productData)
       setProducts([...products, response.data])
       setNewProduct({ name: '', price: '', description: '', category: '', stock: 0, image: '' })
-      toast.success('Product created successfully')
+      toast.success('Tạo sản phẩm thành công')
     } catch (error) {
-      console.error('Error creating product:', error)
-      toast.error(error.response?.data?.message || 'Failed to create product')
+      console.error('Lỗi khi tạo sản phẩm:', error)
+      toast.error(error.response?.data?.message || 'Không thể tạo sản phẩm')
     } finally {
       setLoading(false)
     }
@@ -82,7 +82,7 @@ function AdminDashboard() {
 
     // Validate category name
     if (!newCategory.name.trim()) {
-      toast.error('Category name is required')
+      toast.error('Tên danh mục là bắt buộc')
       setLoading(false)
       return
     }
@@ -91,14 +91,14 @@ function AdminDashboard() {
       const response = await createCategory(newCategory)
       setCategories([...categories, response.data])
       setNewCategory({ name: '', description: '' })
-      toast.success('Category created successfully')
+      toast.success('Tạo danh mục thành công')
     } catch (error) {
-      console.error('Error creating category:', error)
+      console.error('Lỗi khi tạo danh mục:', error)
       // Check for duplicate category error
       if (error.response?.data?.message?.includes('duplicate')) {
-        toast.error('A category with this name already exists')
+        toast.error('Danh mục với tên này đã tồn tại')
       } else {
-        toast.error(error.response?.data?.message || 'Failed to create category')
+        toast.error(error.response?.data?.message || 'Không thể tạo danh mục')
       }
     } finally {
       setLoading(false)
@@ -110,10 +110,10 @@ function AdminDashboard() {
     try {
       await deleteProduct(id)
       setProducts(products.filter(p => p._id !== id))
-      toast.success('Product deleted')
+      toast.success('Đã xóa sản phẩm')
     } catch (error) {
-      console.error('Error deleting product:', error)
-      toast.error('Failed to delete product')
+      console.error('Lỗi khi xóa sản phẩm:', error)
+      toast.error('Không thể xóa sản phẩm')
     } finally {
       setLoading(false)
     }
@@ -124,54 +124,54 @@ function AdminDashboard() {
     try {
       await deleteCategory(id)
       setCategories(categories.filter(c => c._id !== id))
-      toast.success('Category deleted')
+      toast.success('Đã xóa danh mục')
     } catch (error) {
-      console.error('Error deleting category:', error)
-      toast.error('Failed to delete category')
+      console.error('Lỗi khi xóa danh mục:', error)
+      toast.error('Không thể xóa danh mục')
     } finally {
       setLoading(false)
     }
   }
 
   if (user?.role !== 'admin')
-    return <div className='access-denied'>Access denied. Administrator privileges required.</div>
+    return <div className='access-denied'>Truy cập bị từ chối. Yêu cầu quyền quản trị viên.</div>
   if (loading) return <LoadingSpinner />
 
   return (
     <div className='admin-dashboard'>
-      <h1>Admin Dashboard</h1>
+      <h1>Bảng Điều Khiển Quản Trị</h1>
 
       <div className='admin-tabs'>
         <button
           className={`tab-btn ${activeTab === 'products' ? 'active' : ''}`}
           onClick={() => setActiveTab('products')}
         >
-          Products
+          Sản Phẩm
         </button>
         <button
           className={`tab-btn ${activeTab === 'categories' ? 'active' : ''}`}
           onClick={() => setActiveTab('categories')}
         >
-          Categories
+          Danh Mục
         </button>
         <button
           className={`tab-btn ${activeTab === 'orders' ? 'active' : ''}`}
           onClick={() => setActiveTab('orders')}
         >
-          Orders
+          Đơn Hàng
         </button>
       </div>
 
       {activeTab === 'products' && (
         <div className='admin-section'>
-          <h2>Create Product</h2>
+          <h2>Tạo Sản Phẩm</h2>
           <form onSubmit={handleCreateProduct} className='admin-form'>
             <div className='form-group'>
               <input
                 type='text'
                 value={newProduct.name}
                 onChange={e => setNewProduct({ ...newProduct, name: e.target.value })}
-                placeholder='Product Name'
+                placeholder='Tên Sản Phẩm'
                 required
               />
             </div>
@@ -181,7 +181,7 @@ function AdminDashboard() {
                 type='number'
                 value={newProduct.price}
                 onChange={e => setNewProduct({ ...newProduct, price: e.target.value })}
-                placeholder='Price'
+                placeholder='Giá'
                 required
               />
             </div>
@@ -192,7 +192,7 @@ function AdminDashboard() {
                 onChange={e => setNewProduct({ ...newProduct, category: e.target.value })}
                 required
               >
-                <option value=''>Select Category</option>
+                <option value=''>Chọn Danh Mục</option>
                 {categories.map(category => (
                   <option key={category._id} value={category._id}>
                     {category.name}
@@ -206,7 +206,7 @@ function AdminDashboard() {
                 type='number'
                 value={newProduct.stock}
                 onChange={e => setNewProduct({ ...newProduct, stock: e.target.value })}
-                placeholder='Stock'
+                placeholder='Số Lượng'
                 required
               />
             </div>
@@ -216,7 +216,7 @@ function AdminDashboard() {
                 type='text'
                 value={newProduct.image}
                 onChange={e => setNewProduct({ ...newProduct, image: e.target.value })}
-                placeholder='Image URL'
+                placeholder='URL Hình Ảnh'
               />
             </div>
 
@@ -224,29 +224,29 @@ function AdminDashboard() {
               <textarea
                 value={newProduct.description}
                 onChange={e => setNewProduct({ ...newProduct, description: e.target.value })}
-                placeholder='Description'
+                placeholder='Mô Tả'
                 required
               />
             </div>
 
             <button type='submit' className='submit-btn' disabled={loading}>
-              Create Product
+              Tạo Sản Phẩm
             </button>
           </form>
 
-          <h2>Products List</h2>
+          <h2>Danh Sách Sản Phẩm</h2>
           <div className='item-list'>
             {products.length === 0 ? (
-              <p className='no-items'>No products found</p>
+              <p className='no-items'>Không tìm thấy sản phẩm nào</p>
             ) : (
               products.map(product => (
                 <div key={product._id} className='item-card'>
                   <div className='item-header'>
                     <h3>{product.name}</h3>
-                    <span className='stock-badge'>{product.stock} in stock</span>
+                    <span className='stock-badge'>{product.stock} trong kho</span>
                   </div>
                   <p className='price-tag'>
-                    <strong>Price:</strong> ${product.price}
+                    <strong>Giá:</strong> {product.price}đ
                   </p>
                   {product.image && (
                     <div className='product-image-container'>
@@ -260,7 +260,7 @@ function AdminDashboard() {
                       onClick={() => handleDeleteProduct(product._id)}
                       disabled={loading}
                     >
-                      Delete
+                      Xóa
                     </button>
                   </div>
                 </div>
@@ -272,14 +272,14 @@ function AdminDashboard() {
 
       {activeTab === 'categories' && (
         <div className='admin-section'>
-          <h2>Create Category</h2>
+          <h2>Tạo Danh Mục</h2>
           <form onSubmit={handleCreateCategory} className='admin-form'>
             <div className='form-group'>
               <input
                 type='text'
                 value={newCategory.name}
                 onChange={e => setNewCategory({ ...newCategory, name: e.target.value })}
-                placeholder='Category Name'
+                placeholder='Tên Danh Mục'
                 required
               />
             </div>
@@ -287,18 +287,18 @@ function AdminDashboard() {
               <textarea
                 value={newCategory.description}
                 onChange={e => setNewCategory({ ...newCategory, description: e.target.value })}
-                placeholder='Category Description'
+                placeholder='Mô Tả Danh Mục'
               />
             </div>
             <button type='submit' className='submit-btn' disabled={loading}>
-              Create Category
+              Tạo Danh Mục
             </button>
           </form>
 
-          <h2>Categories List</h2>
+          <h2>Danh Sách Danh Mục</h2>
           <div className='item-list'>
             {categories.length === 0 ? (
-              <p className='no-items'>No categories found</p>
+              <p className='no-items'>Không tìm thấy danh mục nào</p>
             ) : (
               categories.map(category => (
                 <div key={category._id} className='item-card'>
@@ -312,7 +312,7 @@ function AdminDashboard() {
                       onClick={() => handleDeleteCategory(category._id)}
                       disabled={loading}
                     >
-                      Delete
+                      Xóa
                     </button>
                   </div>
                 </div>
@@ -324,26 +324,32 @@ function AdminDashboard() {
 
       {activeTab === 'orders' && (
         <div className='admin-section'>
-          <h2>All Orders</h2>
+          <h2>Tất Cả Đơn Hàng</h2>
           <div className='item-list'>
             {orders.length === 0 ? (
-              <p className='no-items'>No orders found</p>
+              <p className='no-items'>Không tìm thấy đơn hàng nào</p>
             ) : (
               orders.map(order => (
                 <div key={order._id} className='item-card order-card'>
                   <div className='order-card-header'>
-                    <h3>Order #{order._id}</h3>
+                    <h3>Đơn Hàng #{order._id}</h3>
                     <span className={`order-status status-${order.status.toLowerCase()}`}>
-                      {order.status}
+                      {order.status === 'Pending'
+                        ? 'Đang xử lý'
+                        : order.status === 'Completed'
+                        ? 'Hoàn thành'
+                        : order.status === 'Cancelled'
+                        ? 'Đã hủy'
+                        : order.status}
                     </span>
                   </div>
                   <div className='order-details'>
                     <p className='order-total'>
-                      <strong>Total:</strong> <span className='total-amount'>${order.total}</span>
+                      <strong>Tổng tiền:</strong> <span className='total-amount'>{order.total}đ</span>
                     </p>
                     {order.createdAt && (
                       <p className='order-date'>
-                        <strong>Date:</strong> {new Date(order.createdAt).toLocaleString()}
+                        <strong>Ngày đặt:</strong> {new Date(order.createdAt).toLocaleString()}
                       </p>
                     )}
                   </div>

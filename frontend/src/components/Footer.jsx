@@ -8,10 +8,10 @@ function Footer() {
     <footer className='bg-gray-800 text-white pt-10 pb-6'>
       <div className='container mx-auto px-4'>
         <div className='grid grid-cols-1 md:grid-cols-4 gap-8'>
-          {/* Company Info */}
+          {/* Thông tin công ty */}
           <div className='mb-6 md:mb-0'>
             <p className='text-gray-300 mb-4'>
-              Your trusted online shopping destination for quality products and excellent service.
+              Điểm đến mua sắm trực tuyến đáng tin cậy cho các sản phẩm chất lượng và dịch vụ tuyệt vời.
             </p>
             <div className='flex space-x-4'>
               <a href='#' className='text-gray-300 hover:text-white transition duration-300'>
@@ -40,63 +40,63 @@ function Footer() {
             </div>
           </div>
 
-          {/* Quick Links */}
+          {/* Liên kết nhanh */}
           <div>
-            <h3 className='text-lg font-semibold mb-4'>Quick Links</h3>
+            <h3 className='text-lg font-semibold mb-4'>Liên Kết Nhanh</h3>
             <ul className='space-y-2'>
               <li>
                 <Link to='/' className='text-gray-300 hover:text-white transition duration-300'>
-                  Home
+                  Trang Chủ
                 </Link>
               </li>
               <li>
                 <Link to='/cart' className='text-gray-300 hover:text-white transition duration-300'>
-                  Cart
+                  Giỏ Hàng
                 </Link>
               </li>
               <li>
                 <Link to='/login' className='text-gray-300 hover:text-white transition duration-300'>
-                  Login
+                  Đăng Nhập
                 </Link>
               </li>
               <li>
                 <Link to='/register' className='text-gray-300 hover:text-white transition duration-300'>
-                  Register
+                  Đăng Ký
                 </Link>
               </li>
             </ul>
           </div>
 
-          {/* Categories */}
+          {/* Danh mục */}
           <div>
-            <h3 className='text-lg font-semibold mb-4'>Categories</h3>
+            <h3 className='text-lg font-semibold mb-4'>Danh Mục</h3>
             <ul className='space-y-2'>
               <li>
                 <a href='#' className='text-gray-300 hover:text-white transition duration-300'>
-                  Electronics
+                  Điện Tử
                 </a>
               </li>
               <li>
                 <a href='#' className='text-gray-300 hover:text-white transition duration-300'>
-                  Fashion
+                  Thời Trang
                 </a>
               </li>
               <li>
                 <a href='#' className='text-gray-300 hover:text-white transition duration-300'>
-                  Home & Kitchen
+                  Nhà Cửa & Bếp
                 </a>
               </li>
               <li>
                 <a href='#' className='text-gray-300 hover:text-white transition duration-300'>
-                  Books
+                  Sách
                 </a>
               </li>
             </ul>
           </div>
 
-          {/* Contact */}
+          {/* Liên hệ */}
           <div>
-            <h3 className='text-lg font-semibold mb-4'>Contact Us</h3>
+            <h3 className='text-lg font-semibold mb-4'>Liên Hệ Với Chúng Tôi</h3>
             <ul className='space-y-2 text-gray-300'>
               <li className='flex items-start'>
                 <svg
@@ -119,7 +119,7 @@ function Footer() {
                     d='M15 11a3 3 0 11-6 0 3 3 0 016 0z'
                   ></path>
                 </svg>
-                123 Street, Ho Chi Minh City, Vietnam
+                120 Đường Chiến Thắng, Văn Quán, Hà Đông, Hà Nội
               </li>
               <li className='flex items-start'>
                 <svg
@@ -136,7 +136,7 @@ function Footer() {
                     d='M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z'
                   ></path>
                 </svg>
-                info@webbanhang.com
+                tathieu@webbanhang.com
               </li>
               <li className='flex items-start'>
                 <svg
@@ -159,9 +159,9 @@ function Footer() {
           </div>
         </div>
 
-        {/* Copyright Section */}
+        {/* Phần Bản quyền */}
         <div className='border-t border-gray-700 mt-8 pt-6 text-center text-gray-400'>
-          <p>© {currentYear} Web Bán Hàng. All Rights Reserved.</p>
+          <p>© {currentYear} Web Bán Hàng. Tất cả quyền được bảo lưu.</p>
         </div>
       </div>
     </footer>

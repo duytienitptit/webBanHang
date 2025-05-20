@@ -42,12 +42,12 @@ function Cart() {
     setLoading(true)
     try {
       await createOrder()
-      toast.success('Order created successfully')
+      toast.success('Đặt hàng thành công')
       setCart(null)
       navigate('/orders')
     } catch (error) {
       console.log(error)
-      toast.error('Checkout failed')
+      toast.error('Thanh toán thất bại')
     } finally {
       setLoading(false)
     }
@@ -74,15 +74,15 @@ function Cart() {
             />
           </svg>
         </div>
-        <h2 className='text-2xl font-semibold text-gray-800 mb-3'>Your cart is empty</h2>
+        <h2 className='text-2xl font-semibold text-gray-800 mb-3'>Giỏ hàng của bạn đang trống</h2>
         <p className='text-gray-500 mb-8 max-w-md text-center'>
-          Looks like you haven't added any products to your cart yet.
+          Có vẻ như bạn chưa thêm bất kỳ sản phẩm nào vào giỏ hàng.
         </p>
         <button
           onClick={() => navigate('/')}
           className='px-8 py-3 bg-[var(--color-apple-blue)] text-white rounded-full font-medium hover:bg-[var(--color-apple-darkblue)] transition-all duration-300 hover:shadow-lg hover:scale-105'
         >
-          Continue Shopping
+          Tiếp tục mua sắm
         </button>
       </div>
     )
@@ -96,7 +96,7 @@ function Cart() {
       </div>
 
       <div className='flex items-center mb-8'>
-        <h1 className='text-3xl md:text-4xl font-bold text-gray-800'>Your Shopping Cart</h1>
+        <h1 className='text-3xl md:text-4xl font-bold text-gray-800'>Giỏ hàng của bạn</h1>
         <div className='ml-4 h-1 w-20 bg-[var(--color-apple-blue)] rounded-full'></div>
       </div>
 
@@ -112,23 +112,31 @@ function Cart() {
               <div className='flex flex-col sm:flex-row items-start sm:items-center justify-between'>
                 <div className='flex flex-col sm:flex-row items-start sm:items-center mb-5 sm:mb-0'>
                   {/* Product Image */}
-                  <div className='relative w-20 h-20 bg-gradient-to-br from-blue-50 to-[var(--color-apple-gray)] rounded-xl flex items-center justify-center mr-6 mb-4 sm:mb-0 group-hover:scale-110 transition-transform duration-300'>
+                  <div className='relative w-20 h-20 bg-gradient-to-br from-blue-50 to-[var(--color-apple-gray)] rounded-xl flex items-center justify-center mr-6 mb-4 sm:mb-0 group-hover:scale-110 transition-transform duration-300 overflow-hidden'>
                     <div className='absolute top-0 right-0 w-8 h-8 rounded-full bg-white bg-opacity-30 -mr-2 -mt-2'></div>
                     <div className='absolute bottom-0 left-0 w-8 h-8 rounded-full bg-white bg-opacity-30 -ml-2 -mb-2'></div>
-                    <svg
-                      xmlns='http://www.w3.org/2000/svg'
-                      className='h-10 w-10 text-[var(--color-apple-blue)] opacity-80'
-                      fill='none'
-                      viewBox='0 0 24 24'
-                      stroke='currentColor'
-                    >
-                      <path
-                        strokeLinecap='round'
-                        strokeLinejoin='round'
-                        strokeWidth={1.5}
-                        d='M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z'
+                    {item.product.image ? (
+                      <img
+                        src={item.product.image}
+                        alt={item.product.name}
+                        className='w-full h-full object-cover relative z-10'
                       />
-                    </svg>
+                    ) : (
+                      <svg
+                        xmlns='http://www.w3.org/2000/svg'
+                        className='h-10 w-10 text-[var(--color-apple-blue)] opacity-80'
+                        fill='none'
+                        viewBox='0 0 24 24'
+                        stroke='currentColor'
+                      >
+                        <path
+                          strokeLinecap='round'
+                          strokeLinejoin='round'
+                          strokeWidth={2}
+                          d='M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z'
+                        />
+                      </svg>
+                    )}
                   </div>
 
                   <div>
@@ -195,7 +203,7 @@ function Cart() {
                         clipRule='evenodd'
                       />
                     </svg>
-                    Remove
+                    Xóa
                   </button>
                 </div>
               </div>
@@ -206,13 +214,13 @@ function Cart() {
         <div className='lg:col-span-1'>
           <div className='bg-white p-8 rounded-xl shadow-sm border border-gray-50 sticky top-24'>
             <h2 className='text-2xl font-semibold mb-6 text-gray-800 pb-4 border-b border-gray-100'>
-              Order Summary
+              Tóm tắt đơn hàng
             </h2>
 
             <div className='space-y-4 mb-8'>
               <div className='flex justify-between items-center'>
                 <span className='text-gray-600'>
-                  Subtotal ({cart.items.reduce((total, item) => total + item.quantity, 0)} items)
+                  Tạm tính ({cart.items.reduce((total, item) => total + item.quantity, 0)} sản phẩm)
                 </span>
                 <span className='font-medium'>
                   {cart.items
@@ -222,12 +230,12 @@ function Cart() {
                 </span>
               </div>
               <div className='flex justify-between items-center'>
-                <span className='text-gray-600'>Shipping</span>
-                <span className='font-medium text-green-600'>Free</span>
+                <span className='text-gray-600'>Phí vận chuyển</span>
+                <span className='font-medium text-green-600'>Miễn phí</span>
               </div>
               <div className='border-t border-dashed border-gray-200 pt-4 mt-4'>
                 <div className='flex justify-between items-center'>
-                  <span className='text-lg font-semibold'>Total</span>
+                  <span className='text-lg font-semibold'>Tổng tiền</span>
                   <span className='text-lg font-bold text-[var(--color-apple-blue)]'>
                     {cart.items
                       .reduce((total, item) => total + item.product.price * item.quantity, 0)
@@ -242,14 +250,14 @@ function Cart() {
               onClick={handleCheckout}
               className='w-full py-4 bg-[var(--color-apple-blue)] text-white rounded-full font-medium hover:bg-[var(--color-apple-darkblue)] transition-all duration-300 hover:shadow-lg transform hover:scale-[1.02]'
             >
-              Proceed to Checkout
+              Tiến hành thanh toán
             </button>
 
             <button
               onClick={() => navigate('/')}
               className='w-full py-3 text-[var(--color-apple-blue)] rounded-full hover:bg-blue-50 transition-all duration-300 mt-4 font-medium border border-[var(--color-apple-blue)] border-opacity-20'
             >
-              Continue Shopping
+              Tiếp tục mua sắm
             </button>
           </div>
         </div>

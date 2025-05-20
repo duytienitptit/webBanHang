@@ -1,0 +1,48 @@
+/* Custom styles and animations for the Profile page */
+
+@keyframes blob {
+  0% {
+    transform: scale(1) translate(0px, 0px);
+  }
+  33% {
+    transform: scale(1.1) translate(20px, -20px);
+  }
+  66% {
+    transform: scale(0.9) translate(-20px, 20px);
+  }
+  100% {
+    transform: scale(1) translate(0px, 0px);
+  }
+}
+
+.animate-blob {
+  animation: blob 7s infinite alternate;
+}
+
+.animation-delay-2000 {
+  animation-delay: 2s;
+}
+
+.animation-delay-4000 {
+  animation-delay: 4s;
+}
+
+/* Custom transitions */
+.profile-transition {
+  transition: all 0.3s ease-in-out;
+}
+
+/* Hover effects */
+.input-hover:hover {
+  box-shadow: 0 0 5px rgba(16, 185, 129, 0.3);
+}
+
+/* Custom gradient */
+.profile-gradient {
+  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+}
+
+/* Avatar glow effect */
+.avatar-glow {
+  box-shadow: 0 0 15px rgba(16, 185, 129, 0.5);
+}
